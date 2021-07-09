@@ -1,0 +1,19 @@
+{
+  "name": "messaging-api",
+  "version": "1.0.0",
+  "description": "Messaging api for happy5 test",
+  "main": "index.js",
+  "scripts": {
+    "start" : "NODE_ENV=development nodemon index.js serve",
+    "test": "npm run test"
+  },
+  "keywords": [
+    "messaging-api"
+  ],
+  "author": "Steven T",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
