@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(require('./router'))
 
-con.connect((err, connection) => {
+con.connect((err) => {
   if (err) throw err;
   console.log('mysql is connected')
 })
