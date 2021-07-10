@@ -88,22 +88,6 @@ exports.getMessagesByConvId = (req, res) => {
 
 exports.getConversationsByUserId = (req, res) => {
   const { userId } = req.params
-  const sql = "SELECT c.*, u1.phone_number as phone_1, u2.phone_number as phone_2, MAX(m.send_date) as last_message_time from conversations c JOIN users u1 ON u1.id = c.user_1 JOIN users u2 ON u2.id = c.user_2 INNER JOIN messages m ON m.conversation_id = c.id WHERE c.user_1 = ? OR c.user_2 = ? GROUP BY c.id";
-  const query = mysql.format(sql, [userId, userId])
-
-  con.query(query, (err, records) => {
-    if (err) throw err
-    if (records.length === 0) {
-      res.status(400).send({error: 'Data not available'})
-    } else {
-      res.status(200).send(records)
-    }
-  })
-}
-
-
-exports.getConversationsWithUnreadCount = (req, res) => {
-  const { userId } = req.params
   const sql = "SELECT c.*, u1.phone_number as phone_1, u2.phone_number as phone_2, MAX(m.send_date) as last_message_time FROM conversations c JOIN users u1 ON u1.id = c.user_1 JOIN users u2 ON u2.id = c.user_2 INNER JOIN messages m ON m.conversation_id = c.id WHERE (c.user_1 = ? OR c.user_2 = ?) GROUP BY c.id";
 
   const query = mysql.format(sql, [userId, userId, userId])
