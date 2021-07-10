@@ -39,12 +39,16 @@ exports.sendMessage = async (req, res) => {
   con.query(query, (err, records) => {
     if (err) throw err
 
-    const conversationId = records[0]?.id
+    var conversationId = records[0]?.id
     if (!!conversationId) {
-      updateReadStatus(conversationId, receiverId)
-      insertMessage(conversationId, senderId, message)
+      try {
+        updateReadStatus(conversationId, receiverId)
+        insertMessage(conversationId, senderId, message)
 
-      res.status(201).send({message: 'success insert message 1'})
+        res.status(201).send({message: 'success insert message 1'})
+      } catch (error) {
+        res.status(500).send({message: 'something wrong', error : error})
+      }
     } else {
       const queryDetails = []
       queryDetails.push("conversations", "user_1", "user_2", senderId, receiverId)
@@ -52,14 +56,16 @@ exports.sendMessage = async (req, res) => {
       const sql = 'INSERT INTO ?? (??,??) VALUES (?,?)'
       const query = mysql.format(sql, queryDetails)
       
-      con.query(query, (err, records) => {
+      con.query(query, (err) => {
         if (err) throw err
-        const conversationId = records?.insertId
-
-        updateReadStatus(conversationId, receiverId)
-        insertMessage(conversationId, senderId, message)
-
-        res.status(201).send({message: 'success insert message 2'})
+        try {
+          updateReadStatus(conversationId, receiverId)
+          insertMessage(conversationId, senderId, message)
+          
+          res.status(201).send({message: 'success insert message 2'})
+        } catch (error) {
+          res.status(500).send({message: 'something wrong', error : error})
+        }
       })
     }
   })
@@ -73,9 +79,22 @@ exports.getMessagesByConvId = (req, res) => {
   con.query(query, (err, recods) => {
     if (err) throw err
     if (recods.length === 0) {
-      res.status(400).send({
-        error: 'data not found'
-      })
+      res.status(400).send({error: 'Data not available'})
+    } else {
+      res.status(200).send(recods)
+    }
+  })
+}
+
+exports.getConversationsById = (req, res) => {
+  const { id } = req.params
+  let sql = "SELECT c.*, u1.phone_number as phone_1, u2.phone_number as phone_2 from conversations c JOIN users u1 ON u1.id = c.user_1 JOIN users u2 ON u2.id = c.user_2 WHERE c.user_1 = ? OR c.user_2 = ?";
+  let query = mysql.format(sql, [id, id])
+
+  con.query(query, (err, recods) => {
+    if (err) throw err
+    if (recods.length === 0) {
+      res.status(400).send({error: 'Data not available'})
     } else {
       res.status(200).send(recods)
     }
