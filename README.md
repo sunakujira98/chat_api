@@ -28,19 +28,22 @@ npm run test
 # response example
 1. User can send a message to another user. POST /message 
 ## (New conversation)
-```sh{
+```sh
+{
   "message": "success insert message 2"
 }
 ```
 
 ## (Existing conversation)
-```sh{
+```sh
+{
   "message": "success insert message 1"
 }
 ```
 
 2. User can list all messages in a conversation between them and another user GET /message/conversation/:convId/:userId
-```sh[
+```sh
+[
     {
         "id": 1,
         "conversation_id": 1,
@@ -277,7 +280,8 @@ npm run test
 ```
 
 3. User can list all their conversations (if user A has been chatting with user C & D, the list for A will shows A-C & A-D) GET /conversation/user/:userId
-```sh[
+```sh
+[
     {
         "id": 1,
         "user_1": 1,
@@ -291,7 +295,8 @@ npm run test
 ```
 
 4. List all users GET /users
-```sh[
+```sh
+[
     {
         "id": 4,
         "phone_number": "081111111111"
@@ -323,8 +328,9 @@ npm run test
     "conversationId" : 2
 }
 
-```sh{
-    "message": "successful update conversation to read"
+```sh
+{
+  "message": "successful update conversation to read"
 }
 ```
 
