@@ -1,4 +1,3 @@
-const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const app = require('../index')
@@ -12,7 +11,6 @@ describe('User can list all messages in a conversation between them and another 
     const userId = 3
 
     chai.request(app).get(`/message/conversation/${convId}/${userId}`).end((error, response) => {
-      console.log("resposne", response)
       response.should.have.status(400)
       response.body.should.be.a('object')
       response.body.should.be.have.property('error')
@@ -27,7 +25,6 @@ describe('User can list all messages in a conversation between them and another 
     const userId = 1
 
     chai.request(app).get(`/message/conversation/${convId}/${userId}`).end((error, response) => {
-      console.log("resposne", response)
       response.should.have.status(200)
       response.body.should.be.a('array')
       done()
@@ -45,7 +42,7 @@ describe('User can send a message to another user (new conversation). POST messa
     chai.request(app).post('/message/').set('content-type', 'application/x-www-form-urlencoded').send({
       senderId, receiverId, message
     })
-    .end((err, response) => {
+    .end((error, response) => {
       response.should.have.status(201)
       response.body.should.be.a("object")
       response.body.should.be.have.property('message')
@@ -79,7 +76,6 @@ describe('User can list all their conversations (if user A has been chatting wit
     const userId = 1
 
     chai.request(app).get(`/conversation/user/${userId}`).end((error, response) => {
-      console.log("resposne", response)
       response.should.have.status(200)
       response.body.should.be.a('array')
       done()
