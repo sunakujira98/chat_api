@@ -128,3 +128,26 @@ exports.getConversationsByUserId = (req, res) => {
     }
   })
 }
+
+exports.readConversation = (req, res) => {
+  const { userId } = req.params
+  const { conversationId } = req.body
+
+  const sql = "UPDATE messages SET is_read = true WHERE conversation_id = ? AND sender_user_id != ?";
+  const queryDetails = []
+  queryDetails.push(userId, conversationId)
+
+  const query = mysql.format(sql, queryDetails)
+
+  try {
+    con.query(query, (err, records) => {
+      if (err) throw err
+  
+      console.log("records", records)
+      
+      res.status(200).send({records, message : 'successful update conversation to read'})
+    })
+  } catch (error) {
+    res.status(500).send({message: 'oops something wrong', message: error})
+  }
+}

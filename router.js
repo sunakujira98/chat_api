@@ -7,5 +7,6 @@ router.post('/message', require('./controller/messages').sendMessage)
 router.get('/message/conversation/:convId', require('./controller/messages').getMessagesByConvId)
 
 router.get('/conversation/user/:userId', require('./controller/messages').getConversationsByUserId)
+router.put('/conversation/user/:userId', require('./controller/messages').readConversation)
 
 module.exports = router
