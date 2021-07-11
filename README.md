@@ -30,12 +30,14 @@ npm run test
 ## (New conversation)
 ```sh{
   "message": "success insert message 2"
-}```
+}
+```
 
 ## (Existing conversation)
 ```sh{
   "message": "success insert message 1"
-}```
+}
+```
 
 2. User can list all messages in a conversation between them and another user GET /message/conversation/:convId/:userId
 ```sh[
@@ -271,7 +273,8 @@ npm run test
         "is_read": 1,
         "send_date": "2021-07-11T16:39:43.000Z"
     }
-]```
+]
+```
 
 3. User can list all their conversations (if user A has been chatting with user C & D, the list for A will shows A-C & A-D) GET /conversation/user/:userId
 ```sh[
