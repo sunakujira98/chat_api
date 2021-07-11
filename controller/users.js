@@ -1,11 +1,11 @@
 const con = require('../db/connection')
 
-exports.getUsers = async (res) => { 
-  let query = "SELECT * from user";
+exports.getUsers = async (req, res) => { 
+  let query = "SELECT * from users";
 
   con.query(query, (err, recods) => {
     if (err) throw err
-    console.log('Success getting data from user table: \n', recods)
+    
     if (recods.length === 0) {
       res.status(400).send({error: 'Data not available'})
     } else {

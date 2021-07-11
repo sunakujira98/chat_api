@@ -39,7 +39,7 @@ exports.sendMessage = async (req, res) => {
   con.query(query, (err, records) => {
     if (err) throw err
 
-    var conversationId = records[0]?.id
+    let conversationId = records[0]?.id
     if (!!conversationId) {
       try {
         updateReadStatus(conversationId, receiverId)
@@ -56,11 +56,12 @@ exports.sendMessage = async (req, res) => {
       const sql = 'INSERT INTO ?? (??,??) VALUES (?,?)'
       const query = mysql.format(sql, queryDetails)
       
-      con.query(query, (err) => {
+      con.query(query, (err, rows) => {
         if (err) throw err
+        const createdConversationId = rows.insertId 
+
         try {
-          updateReadStatus(conversationId, receiverId)
-          insertMessage(conversationId, senderId, message)
+          insertMessage(createdConversationId, senderId, message)
           
           res.status(201).send({message: 'success insert message 2'})
         } catch (error) {
@@ -72,16 +73,29 @@ exports.sendMessage = async (req, res) => {
 }
 
 exports.getMessagesByConvId = (req, res) => {
-  const { convId } = req.params
-  const sql = "SELECT * from messages WHERE conversation_id = ?";
+  const { convId, userId } = req.params
+
+  // check if the conversations is belong to userId
+  const sql = "SELECT * from conversations WHERE id = ?";
   const query = mysql.format(sql, convId)
 
   con.query(query, (err, records) => {
     if (err) throw err
-    if (records.length === 0) {
-      res.status(400).send({error: 'Data not available'})
+    console.log("records", records[0].user_1)
+    if ((records[0].user_1 === parseInt(userId) || records[0].user_2 === parseInt(userId))) {
+      const sql = "SELECT * from messages WHERE conversation_id = ?";
+      const query = mysql.format(sql, [convId, userId])
+    
+      con.query(query, (err, records) => {
+        if (err) throw err
+        if (records.length === 0) {
+          res.status(400).send({error: 'Data not available'})
+        } else {
+          res.status(200).send(records)
+        }
+      })
     } else {
-      res.status(200).send(records)
+      res.status(400).send({error: 'This userId does not belong to this conversation'})
     }
   })
 }
@@ -118,12 +132,7 @@ exports.getConversationsByUserId = (req, res) => {
           }
           records[i].unread_count = unreadCount
         }
-
-        if (rows.length === 0) {
-          res.status(400).send({error: 'Data not available'})
-        } else {
-          res.status(200).send(records)
-        }
+        res.status(200).send(records)
       })
     }
   })
@@ -142,10 +151,8 @@ exports.readConversation = (req, res) => {
   try {
     con.query(query, (err, records) => {
       if (err) throw err
-  
-      console.log("records", records)
-      
-      res.status(200).send({records, message : 'successful update conversation to read'})
+
+      res.status(200).send({message : 'successful update conversation to read'})
     })
   } catch (error) {
     res.status(500).send({message: 'oops something wrong', message: error})

@@ -4,8 +4,8 @@
   "description": "Messaging api for happy5 test",
   "main": "index.js",
   "scripts": {
-    "start" : "NODE_ENV=development nodemon index.js serve",
-    "test": "npm run test"
+    "serve": "NODE_ENV=development nodemon index.js serve",
+    "test": "mocha controller/"
   },
   "keywords": [
     "messaging-api"
@@ -15,5 +15,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^9.0.2"
   }
 }

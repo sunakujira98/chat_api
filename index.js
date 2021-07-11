@@ -2,8 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const con = require('./db/connection')
 
-console.log("con", con)
-
 const app = express()
 
 app.use(bodyParser.json())
@@ -25,3 +23,5 @@ app.listen(
     `Server running on port 5000`
   ),
 )
+
+module.exports = app
