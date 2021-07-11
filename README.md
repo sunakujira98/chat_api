@@ -287,7 +287,8 @@ npm run test
         "last_message_time": "2021-07-11T16:39:43.000Z",
         "unread_count": 0
     }
-]```
+]
+```
 
 4. List all users GET /users
 ```sh[
@@ -315,7 +316,8 @@ npm run test
         "id": 2,
         "phone_number": "087755553333"
     }
-]```
+]
+```
 
 5. read conversation PUT /conversation/user/:userId , with the request body {
     "conversationId" : 2
@@ -323,5 +325,6 @@ npm run test
 
 ```sh{
     "message": "successful update conversation to read"
-}```
+}
+```
 
