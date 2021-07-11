@@ -20,10 +20,10 @@ chat api backened using nodejs (common JS)
 6. read conversation PUT /conversation/user/:userId 
 
 # run the testing (using mocha and chai)
-npm install mocha --save-dev 
-npm install chai --save-dev 
-npm install chai-http --save-dev 
-npm run test
+1. npm install mocha --save-dev 
+2. npm install chai --save-dev 
+3. npm install chai-http --save-dev 
+4. npm run test
 
 # response example
 1. User can send a message to another user. POST /message 
