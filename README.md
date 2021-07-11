@@ -28,6 +28,17 @@ npm run test
 # response example
 1. User can send a message to another user. POST /message 
 ## (New conversation)
+
+### (Example Request)
+```sh
+{
+  "senderId" : 4,
+  "receiverId" : 5,
+  "message" : "Hai gan kenalan yuk"
+}
+```
+
+### (Example Response)
 ```sh
 {
   "message": "success insert message 2"
@@ -35,6 +46,16 @@ npm run test
 ```
 
 ## (Existing conversation)
+### (Example Request)
+```sh
+{
+  "senderId" : 5,
+  "receiverId" : 4,
+  "message" : "Hai gan, ini siapa ya gan?"
+}
+```
+
+### (Example Response)
 ```sh
 {
   "message": "success insert message 1"
@@ -324,10 +345,16 @@ npm run test
 ]
 ```
 
-5. read conversation PUT /conversation/user/:userId , with the request body {
-    "conversationId" : 2
-}
+5. read conversation PUT /conversation/user/:userId
 
+### (Example Request)
+```sh
+{
+  "conversationId" : 2
+}
+```
+
+### (Example Response)
 ```sh
 {
   "message": "successful update conversation to read"
